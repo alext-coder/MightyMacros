@@ -6,7 +6,7 @@ api_key = os.environ.get("API_KEY")
 
 
 
-def process_restrictions(intolerances):
+def process_restrictions(intolerances,meal_type):
     
     url = "https://api.spoonacular.com/recipes/complexSearch"
     params = {
@@ -15,6 +15,8 @@ def process_restrictions(intolerances):
     }   
     if intolerances:
         params["intolerances"] = intolerances
+    if meal_type:
+        params["type"] = meal_type
     response = requests.get(url, params=params)
     if response.status_code == 200:
         return response.json()

@@ -1,8 +1,16 @@
 import services
 import json
 
-def process_recipes(intolerances):
-    search_json =  services.process_restrictions(intolerances)
+
+def process_day(intolerances):
+    day_plan = []
+    day_plan.append(process_recipes(intolerances,"breakfast")[0])
+    day_plan.append(process_recipes(intolerances,"main course")[0])
+    day_plan.append(process_recipes(intolerances,"main course")[1])
+    return day_plan
+
+def process_recipes(intolerances,meal_type):
+    search_json =  services.process_restrictions(intolerances,meal_type)
     ids = [] 
     for result in search_json["results"]:
         ids.append(result["id"])
@@ -14,7 +22,7 @@ def process_recipes(intolerances):
         cleaned_recipe["title"] = recipe["title"]
         cleaned_recipe["ingredients"] = extract_ingredients(recipe)
         result.append(cleaned_recipe)
-    return json.dumps(result)
+    return result
 
 
 def extract_ingredients(recipe):
